@@ -1,29 +1,40 @@
-import java.util.ArrayList;
-import java.util.Random;
+import java.util.*;
 
-public class BruteMarkov implements MarkovInterface<String> {
+public class EfficientMarkov implements MarkovInterface<String> {
 	private String myText;
 	private Random myRandom;
 	private int myOrder;
-	
+	private Map<String, ArrayList<String>> myMap;
+
 	private static String PSEUDO_EOS = "";
 	private static long RANDOM_SEED = 1234;
 	
-	public BruteMarkov(int order) {
+	public EfficientMarkov(int order) {
 		myRandom = new Random(RANDOM_SEED);
 		myOrder = order;
 	}
 	
-	public BruteMarkov() {
+	public EfficientMarkov() {
+		//sets myOrder to default of 3
 		this(3);
-	}
-	
-	public void setTraining(String text) {
-		myText = text;
 	}
 	
 	public int size() {
 		return myText.length();
+	}
+	
+	public void setTraining(String text) {
+		Map<String, ArrayList<String>> myLocalMap = new HashMap<String, ArrayList<String>>();
+		for (int i = 0; i < text.length() - myOrder; i++) {
+			String key = text.substring(i, i + myOrder);
+			if (!myLocalMap.containsKey(key)) {
+				myLocalMap.put(key, new ArrayList<String>());
+			}
+			ArrayList<String> value = myLocalMap.get(key);
+			value.add(Character.toString(text.charAt(i + myOrder)));
+		}
+		myMap = myLocalMap;
+		myText = text;
 	}
 	
 	public String getRandomText(int length) {
@@ -51,30 +62,10 @@ public class BruteMarkov implements MarkovInterface<String> {
 		return sb.toString();
 	}
 	
-	public ArrayList<String> getFollows(String key){
-		ArrayList<String> follows = new ArrayList<String>();
-		
-		int pos = 0;  // location where search for key in text starts
-		
-		while (pos < myText.length()){
-			int start = myText.indexOf(key,pos);
-			if (start == -1){
-				//System.out.println("didn't find "+key);
-				break;
-			}
-			if (start + key.length() >= myText.length()){
-				//System.out.println("found end with "+key);
-				follows.add(PSEUDO_EOS);
-				break;
-			}
-			// next line is string equivalent of myText.charAt(start+key.length())
-			String next = myText.substring(start+key.length(), start+key.length()+1);
-			follows.add(next);
-			pos = start+1;  // search continues after this occurrence
-		}
-		return follows;
+	public ArrayList<String> getFollows(String key) {
+		return myMap.get(key);
 	}
-
+	
 	@Override
 	public int getOrder() {
 		return myOrder;
