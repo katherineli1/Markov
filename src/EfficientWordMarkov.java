@@ -27,7 +27,7 @@ public class EfficientWordMarkov implements MarkovInterface<WordGram> {
 		myText = text.split("\\s+");
 		
 		Map<WordGram, ArrayList<String>> myLocalMap = new HashMap<WordGram, ArrayList<String>>();
-		for (int i = 0; i < myText.length - myOrder; i++) {
+		for(int i = 0; i < myText.length - myOrder; i++) {
 			WordGram key = new WordGram(myText, i, myOrder);
 			if (!myLocalMap.containsKey(key)) {
 				myLocalMap.put(key, new ArrayList<String>());

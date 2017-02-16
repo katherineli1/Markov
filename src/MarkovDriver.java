@@ -4,18 +4,20 @@ import java.util.*;
 
 public class MarkovDriver {
 	public static void main(String[] args) {
-		String filename = "data/alice.txt";
+		String filename = "data/clinton-convention.txt";
 		if (args.length > 0) {
 			filename = args[1];
 		}
 		File f = new File(filename);
 		String text = TextSource.textFromFile(f);
+		int length = text.length();
+		System.out.println(text.length());
 	
 		double start = System.nanoTime();
-		for(int k = 1; k <= 5; k++) {
+		for(int k = 5; k <= 5; k++) {
 			MarkovInterface<String> markov = new EfficientMarkov(k);
 			markov.setTraining(text);
-			String random = markov.getRandomText(200);
+			String random = markov.getRandomText(1000*length);
 			System.out.printf("%d markov model with %d chars\n", k,random.length());
 			printNicely(random,60);
 		}

@@ -12,6 +12,7 @@ public class WordGram implements Comparable<WordGram>{
 	}
 	
 	public int hashCode() {
+//		return 32;
 		myHash = 0;
 		for (int i = 0; i < myWords.length; i++) {
 			myHash += myHash*i + myWords[i].hashCode();
