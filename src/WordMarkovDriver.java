@@ -2,7 +2,7 @@ import java.io.File;
 
 public class WordMarkovDriver {
 	public static void main(String[] args) {
-		String filename = "data/alice.txt";
+		String filename = "data/trump-convention.txt";
 		if (args.length > 0) {
 			filename = args[1];
 		}
@@ -10,11 +10,11 @@ public class WordMarkovDriver {
 		String text = TextSource.textFromFile(f);
 		
 		double start = System.nanoTime();
-		for(int k = 5; k <= 5; k++) {
+		for(int k = 1; k <= 5; k++) {
 			//MarkovInterface<WordGram> markov = new BruteWordMarkov(k);
 			MarkovInterface<WordGram> markov = new EfficientWordMarkov(k);
 			markov.setTraining(text);
-			String random = markov.getRandomText(1600);
+			String random = markov.getRandomText(200);
 			System.out.printf("%d markov model with %d words\n", k,random.split("\\s").length);
 			printNicely(random,60);
 		}

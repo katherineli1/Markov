@@ -58,6 +58,7 @@ public class EfficientWordMarkov implements MarkovInterface<WordGram> {
 				//System.out.println("PSEUDO");
 				break;
 			}
+			sb.append(" ");
 			sb.append(nextItem);
 			current = current.shiftAdd(nextItem);
 		}
