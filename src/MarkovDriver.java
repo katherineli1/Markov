@@ -10,14 +10,13 @@ public class MarkovDriver {
 		}
 		File f = new File(filename);
 		String text = TextSource.textFromFile(f);
-		int length = text.length();
-		System.out.println(text.length());
+		//int length = text.length();
 	
 		double start = System.nanoTime();
-		for(int k = 5; k <= 5; k++) {
+		for(int k = 1; k <= 5; k++) {
 			MarkovInterface<String> markov = new EfficientMarkov(k);
 			markov.setTraining(text);
-			String random = markov.getRandomText(1000*length);
+			String random = markov.getRandomText(200);
 			System.out.printf("%d markov model with %d chars\n", k,random.length());
 			printNicely(random,60);
 		}

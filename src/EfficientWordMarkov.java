@@ -27,6 +27,8 @@ public class EfficientWordMarkov implements MarkovInterface<WordGram> {
 		myText = text.split("\\s+");
 		
 		Map<WordGram, ArrayList<String>> myLocalMap = new HashMap<WordGram, ArrayList<String>>();
+		//Map<WordGram, ArrayList<String>> myLocalMap = new TreeMap<WordGram, ArrayList<String>>();
+
 		for(int i = 0; i < myText.length - myOrder; i++) {
 			WordGram key = new WordGram(myText, i, myOrder);
 			if (!myLocalMap.containsKey(key)) {
@@ -36,6 +38,7 @@ public class EfficientWordMarkov implements MarkovInterface<WordGram> {
 			value.add(myText[i + myOrder]);
 		}
 		myMap = myLocalMap;
+		System.out.println("number of keys: " + myMap.size());
 	}
 	
 	public String getRandomText(int numWords) {

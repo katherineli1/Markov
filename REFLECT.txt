@@ -32,18 +32,17 @@ of William Shakespeare is used as the training text — our online copy of
 this text contains roughly 5.5 million characters. Justify your answer —
 don’t test empirically, use reasoning.
 
-The relationship between runtime and the length of the training text and the max
-characters generated is that the longer the text and the larger the max characters,
-the longer the runtime. On the other hand, the larger the k-value the smaller the runtime.
-To generate 1600 random characters with an order-5 Markov model from the Shapespeare text,
-it would most likely take around 6 seconds because BruteMarkov would have to scan through
-all 5.5 million characters every time it generates 'follows' for each Markov n-gram and 
-it can generate up to 1600 random characters in n-grams of size 5. The order size is not 
-high enough to decrease the amount of time it would take to scan through the entire text to 
-generate that many characters. Assuming that Shakespeare is ~5 times longer than hawthorne.txt,
-as number of max characters double the runtime roughly doubles, and the order-5 Markov 
-decreases the time count by about half (compared to the order-1 Markov), it would most likely 
-take anywhere between 5 and 8 seconds to run.
+The relationship between runtime and the length of the training text and the max characters 
+generated is that the longer the text and the larger the max characters, the longer the runtime. 
+On the other hand, the larger the k-value the smaller the runtime. To generate 1600 random 
+characters with an order-5 Markov model from the Shapespeare text, it would most likely take 
+around 6 seconds because BruteMarkov would have to scan through all 5.5 million characters every 
+time it generates 'follows' for each Markov n-gram and it can generate up to 1600 random characters 
+in n-grams of size 5. The order size is not high enough to decrease the amount of time it would 
+take to scan through the entire text to generate that many characters. Assuming that Shakespeare 
+is ~5 times longer than hawthorne.txt, as number of max characters double the runtime roughly 
+doubles, and the order-5 Markov decreases the time count by about half (compared to the order-1 
+Markov), it would most likely take anywhere between 5 and 8 seconds to run.
 
 PROBLEM A.3: Provide timings using your Map/Smart model for both creating
 the map and generating 200, 400, 800, and 1600 character random texts with
@@ -90,10 +89,19 @@ PART B: HASHMAP VS. TREEMAP FOR EfficientWordMarkov
 What are the differences in performance between HashMap and TreeMap as the
 number of NGrams in the map grow?
 
+Performance of EfficientWordMarkov using HashMaps compared to TreeMaps was assessed by graphing number 
+of keys produced against runtime required to generate 1600 words using an order-5 Markov model. Although 
+there wasn't a huge difference between the runtimes of EfficientWordMarkov using HashMaps and using TreeMaps 
+when the number of keys was low (e.g. for trump-sept15.txt number of keys as 3051 and runtime for HashMaps 
+was 0.041 s while runtime for TreeMaps was 0.046 s), there was a significant difference in runtimes when 
+number of keys was larger (e.g. for kjv10.txt number of keys was 753994 and runtime for HashMaps was 1.657 s 
+and runtime for TreeMaps was 6.458 s). This trend is supported by the shape of the graph, which shows both 
+sets of data values increasing linearly (i.e. as number of keys increased the runtime increased) and as number
+of keys gets larger, the difference in runtime between HashMaps and TreeMaps gets larger. This is most likely
+because HashMaps are unordered while TreeMaps are ordered, so although they both run similarly quickly when there
+are few keys to map to values, HashMaps become significantly faster when dealing with more keys to map to values
+because the HashMap doesn't have to worry about also sorting the keys like TreeMaps do.
 
-
-
-
-
+Note: images of the graph and the data used to generate the graph are included in the git repository
 
 
