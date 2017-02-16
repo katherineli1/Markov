@@ -66,9 +66,34 @@ public class WordGramTester {
 		assertEquals("fail empty",b2.compareTo(a2) < 0, true);
 	}
 	
-//	@Test
-//	public void testShiftAdd(){
-//		assertEquals()
-//	}
-
+	@Test
+	public void testToString(){
+		String[] words = {"apple", "zebra", "mongoose", "hat"};
+		WordGram a = new WordGram(words,0,4);
+		WordGram a2 = new WordGram(words,1,2);
+		WordGram a3 = new WordGram(words,3,1);
+		
+		assertEquals("str fail on toString a", a.toString().equals("{apple, zebra, mongoose, hat}"), true);
+		assertEquals("str fail on toString a2", a2.toString().equals("{zebra, mongoose}"), true);
+		assertEquals("str fail on toString a3", a3.toString().equals("{hat}"), true);
+		assertEquals("str fail on toString a", a.toString().equals("{apple, zebra}"), false);
+		assertEquals("str fail on toString a2", a2.toString().equals("{apple, zebra, mongoose}"), false);
+		assertEquals("str fail on toString a3", a3.toString().equals("{zebra, mongoose, hat}"), false);
+	}
+	
+	@Test
+	public void testShiftAdd(){
+		String[] words = {"apple", "zebra", "mongoose", "hat"};
+		WordGram a = new WordGram(words,0,4);
+		WordGram a2 = new WordGram(words,1,2);
+		WordGram a3 = new WordGram(words,3,1);
+		
+		assertEquals("shift fail on shiftAdd a", a.shiftAdd("pie").toString().equals("{zebra, mongoose, hat, pie}"), true);
+		assertEquals("shift fail on shiftAdd a2", a2.shiftAdd("pie").toString().equals("{mongoose, pie}"), true);
+		assertEquals("shift fail on shiftAdd a3", a3.shiftAdd("pie").toString().equals("{pie}"), true);
+		assertEquals("shift fail on shiftAdd a", a.shiftAdd("pie").toString().equals("{mongoose, hat, pie}"), false);
+		assertEquals("shift fail on shiftAdd a2", a2.shiftAdd("pie").toString().equals("{zebra, mongoose, pie}"), false);
+		assertEquals("shift fail on shiftAdd a3", a3.shiftAdd("pie").toString().equals("{pie, apple}"), false);
+	}
+	
 }
