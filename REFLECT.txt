@@ -7,18 +7,18 @@ Impressions: Your answer here
 ----------------------------------------------------------------------
 PART A: TIMING
 PROBLEM A.1: 
-alice.txt, k = 1, 200 characters max:
-alice.txt, k = 1, 400 characters max:
-alice.txt, k = 1, 800 characters max:
-alice.txt, k = 5, 200 characters max:
-alice.txt, k = 5, 400 characters max:
-alice.txt, k = 5, 800 characters max:
-alice.txt, k = 10, 200 characters max:
-alice.txt, k = 10, 400 characters max:
-alice.txt, k = 10, 800 characters max:
-hawthorne.txt, k = 1, 200 characters max:
-hawthorne.txt, k = 1, 400 characters max:
-hawthorne.txt, k = 1, 800 characters max:
+alice.txt, k = 1, 200 characters max: 0.210
+alice.txt, k = 1, 400 characters max: 0.311
+alice.txt, k = 1, 800 characters max: 0.540
+alice.txt, k = 5, 200 characters max: 0.071
+alice.txt, k = 5, 400 characters max: 0.133
+alice.txt, k = 5, 800 characters max: 0.233
+alice.txt, k = 10, 200 characters max: 0.069
+alice.txt, k = 10, 400 characters max: 0.107
+alice.txt, k = 10, 800 characters max: 0.206
+hawthorne.txt, k = 1, 200 characters max: 0.432
+hawthorne.txt, k = 1, 400 characters max: 0.782
+hawthorne.txt, k = 1, 800 characters max: 1.666
 
 PROBLEM A.2: 2.Based on these results, what is the relationship between the
 runtime and the length of the training text, the k-value, and the max
@@ -28,21 +28,45 @@ of William Shakespeare is used as the training text — our online copy of
 this text contains roughly 5.5 million characters. Justify your answer —
 don’t test empirically, use reasoning.
 
+The relationship between runtime and the length of the training text and the max
+characters generated is that the longer the text and the larger the max characters,
+the longer the runtime. On the other hand, the larger the k-value the smaller the runtime.
+To generate 1600 random characters with an order-5 Markov model from the Shapespeare text,
+it would most likely take around 6 seconds because BruteMarkov would have to scan through
+all 5.5 million characters every time it generates 'follows' for each Markov n-gram and 
+it can generate up to 1600 random characters in n-grams of size 5. The order size is not 
+high enough to decrease the amount of time it would take to scan through the entire text to 
+generate that many characters. Assuming that Shakespeare is ~5 times longer than hawthorne.txt,
+as number of max characters double the runtime roughly doubles, and the order-5 Markov 
+decreases the time count by about half (compared to the order-1 Markov), it would most likely 
+take anywhere between 5 and 8 seconds to run.
+
 PROBLEM A.3: Provide timings using your Map/Smart model for both creating
 the map and generating 200, 400, 800, and 1600 character random texts with
 an order-5 Model and alice.txt. Provide some explanation for the timings
 you observe.
 
-alice.txt, k = 5, 200 characters max:
-alice.txt, k = 5, 400 characters max:
-alice.txt, k = 5, 800 characters max:
-alice.txt, k = 5, 1600 characters max:
+alice.txt, k = 5, 200 characters max: 0.130
+alice.txt, k = 5, 400 characters max: 0.108
+alice.txt, k = 5, 800 characters max: 0.124
+alice.txt, k = 5, 1600 characters max: 0.125
+
+Using a map/smart model (EfficientMarkov) generates the approximate runtimes above that are
+all close to the same value (a value that is significantly lower than the runtimes in BruteMarkov -
+not the initial 200 char BruteMarkov but definitely the larger char values) despite the increasing 
+character max because EfficientMarkov only has to scan through the original text file once. From 
+the first scan it creates a map that maps n-grams to the following characters. The process of making 
+a map might take longer than just generating 200 characters using BruteMarkov but it definitely makes 
+a difference as max character values go up. That map is then accessed whenever the code calls for 
+'follows' so it does not matter how many characters the code asks for since getting values based on 
+keys from a map is extremely fast (i.e. more characters would not cause a significant delay in the 
+program as in BruteMarkov).
 
 PROBLEM A.4: Provide timings for the EfficientWordMarkov with different
 hashcode methods. Time the method you are given and compare the results
 that you achieve with the better hashcode method that you developed.
 
-alice.txt, k = 5, 1600 characters max, basic hashcode:
+alice.txt, k = 5, 1600 characters max, basic hashcode: 
 alice.txt, k = 5, 1600 characters max, better hashcode:
 
 

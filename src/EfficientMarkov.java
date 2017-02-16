@@ -45,7 +45,7 @@ public class EfficientMarkov implements MarkovInterface<String> {
 		String current = myText.substring(index, index + myOrder);
 		//System.out.printf("first random %d for '%s'\n",index,current);
 		sb.append(current);
-		for(int k=0; k < length-myOrder; k++) {
+		for(int k = 0; k < length-myOrder; k++) {
 			ArrayList<String> follows = getFollows(current);
 			if (follows == null || follows.size() == 0) {
 				break;

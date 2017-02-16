@@ -4,7 +4,7 @@ import java.util.*;
 
 public class MarkovDriver {
 	public static void main(String[] args) {
-		String filename = "data/trump-convention.txt";
+		String filename = "data/alice.txt";
 		if (args.length > 0) {
 			filename = args[1];
 		}
@@ -12,7 +12,7 @@ public class MarkovDriver {
 		String text = TextSource.textFromFile(f);
 	
 		double start = System.nanoTime();
-		for(int k=1; k <= 5; k++) {
+		for(int k = 1; k <= 5; k++) {
 			MarkovInterface<String> markov = new EfficientMarkov(k);
 			markov.setTraining(text);
 			String random = markov.getRandomText(200);
