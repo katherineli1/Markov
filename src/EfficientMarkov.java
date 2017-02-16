@@ -38,6 +38,7 @@ public class EfficientMarkov implements MarkovInterface<String> {
 	}
 	
 	public String getRandomText(int length) {
+		if (myText.length() == myOrder) return myText;
 		
 		StringBuilder sb = new StringBuilder();
 		int index = myRandom.nextInt(myText.length() - myOrder);
