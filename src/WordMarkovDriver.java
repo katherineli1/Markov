@@ -10,7 +10,7 @@ public class WordMarkovDriver {
 		String text = TextSource.textFromFile(f);
 		
 		for(int k=1; k <= 5; k++) {
-			MarkovInterface<WordGram> markov = new BruteWordMarkov(k);
+			MarkovInterface<WordGram> markov = new EfficientWordMarkov(k);
 			//MarkovInterface<WordGram> markov = new EfficientWordMarkov(k);
 			markov.setTraining(text);
 			String random = markov.getRandomText(200);

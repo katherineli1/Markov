@@ -1,51 +1,52 @@
 import java.util.*;
 
-public class EfficientMarkov implements MarkovInterface<String> {
-	private String myText;
+public class EfficientWordMarkov implements MarkovInterface<WordGram> {
+	private String[] myText;
 	private Random myRandom;
 	private int myOrder;
-	private Map<String, ArrayList<String>> myMap;
+	private Map<WordGram, ArrayList<String>> myMap;
 
 	private static String PSEUDO_EOS = "";
 	private static long RANDOM_SEED = 1234;
 	
-	public EfficientMarkov(int order) {
+	public EfficientWordMarkov(int order) {
 		myRandom = new Random(RANDOM_SEED);
 		myOrder = order;
 	}
 	
-	public EfficientMarkov() {
+	public EfficientWordMarkov() {
 		//sets myOrder to default of 3
 		this(3);
 	}
 	
 	public int size() {
-		return myText.length();
+		return myText.length;
 	}
 	
 	public void setTraining(String text) {
-		Map<String, ArrayList<String>> myLocalMap = new HashMap<String, ArrayList<String>>();
-		for (int i = 0; i < text.length() - myOrder; i++) {
-			String key = text.substring(i, i + myOrder);
+		myText = text.split("\\s+");
+		
+		Map<WordGram, ArrayList<String>> myLocalMap = new HashMap<WordGram, ArrayList<String>>();
+		for (int i = 0; i < myText.length - myOrder; i++) {
+			WordGram key = new WordGram(myText, i, myOrder);
 			if (!myLocalMap.containsKey(key)) {
 				myLocalMap.put(key, new ArrayList<String>());
 			}
 			ArrayList<String> value = myLocalMap.get(key);
-			value.add(Character.toString(text.charAt(i + myOrder)));
+			value.add(myText[i + myOrder]);
 		}
 		myMap = myLocalMap;
-		myText = text;
 	}
 	
-	public String getRandomText(int length) {
-		
+	public String getRandomText(int numWords) {
 		StringBuilder sb = new StringBuilder();
-		int index = myRandom.nextInt(myText.length() - myOrder);
-				
-		String current = myText.substring(index, index + myOrder);
-		//System.out.printf("first random %d for '%s'\n",index,current);
-		sb.append(current);
-		for(int k=0; k < length-myOrder; k++) {
+		int index = myRandom.nextInt(myText.length - myOrder);
+		
+		WordGram current = new WordGram(myText, index, myOrder);
+
+		sb.append(current.toString());
+		
+		for(int k = 0; k < numWords - myOrder; k++) {
 			ArrayList<String> follows = getFollows(current);
 			if (follows == null || follows.size() == 0) {
 				break;
@@ -58,12 +59,12 @@ public class EfficientMarkov implements MarkovInterface<String> {
 				break;
 			}
 			sb.append(nextItem);
-			current = current.substring(1)+ nextItem;
+			current = current.shiftAdd(nextItem);
 		}
 		return sb.toString();
 	}
 	
-	public ArrayList<String> getFollows(String key) {
+	public ArrayList<String> getFollows(WordGram key) {
 		return myMap.get(key);
 	}
 	

@@ -65,5 +65,10 @@ public class WordGramTester {
 		assertEquals("fail super",a.compareTo(a2) > 0, true);
 		assertEquals("fail empty",b2.compareTo(a2) < 0, true);
 	}
+	
+//	@Test
+//	public void testShiftAdd(){
+//		assertEquals()
+//	}
 
 }
